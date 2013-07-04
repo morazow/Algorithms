@@ -1,0 +1,6 @@
+#!/usr/bin/bc
+
+n = read()
+m = read()
+print n*m,"\n"
+quit
