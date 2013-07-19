@@ -19,3 +19,16 @@ Therefore we can get the product of X and Y by recursively calculating
 all other terms and sum/subtract them accordingly.
 
 Notice that, multiplacation by 10^n means shifting the number to left.
+
+![results](results.pdf)
+
+I use Unix bc calculator to check the correctness of my implementation.
+(Apparently it uses simple multiplacation method)
+
+Usage
+-----
+./run\_tests.sh
+
+TODO
+----
+* Use vectors
