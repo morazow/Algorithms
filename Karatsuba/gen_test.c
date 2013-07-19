@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 int N;
 char buffer[1000001];
 

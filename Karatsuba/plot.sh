@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-#TODO Automate number of client data we are plotting,
-# assuming we are having 5 clients for now.
-
 gnuplot << EOF
 
 set terminal pdf enhanced
