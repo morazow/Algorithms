@@ -2,7 +2,7 @@
 
 
 int N;
-char buffer[100001];
+char buffer[1000001];
 
 int main(int argc, char* argv[]) {
     int i, v;
@@ -15,12 +15,12 @@ int main(int argc, char* argv[]) {
     srand(time(NULL));
     sscanf(argv[1], "%d", &N);
 
-    buffer[0] = '0' + (rand()%10 + 1);
+    buffer[0] = '0' + (rand()%9 + 1);
     for (i = 1; i < N; i++)
         buffer[i] = '0' + (rand() % 10);
     printf("%s\n", buffer);
 
-    buffer[0] = '0' + (rand()%10 + 1);
+    buffer[0] = '0' + (rand()%9 + 1);
     for (i = 1; i < N; i++)
         buffer[i] = '0' + (rand() % 10);
     printf("%s\n", buffer);

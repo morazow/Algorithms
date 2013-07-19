@@ -2,5 +2,6 @@
 
 n = read()
 m = read()
-print n*m,"\n"
+res = n * m
+print res
 quit

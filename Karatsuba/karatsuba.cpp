@@ -2,29 +2,70 @@
 #include <string>
 #include <sstream>
 #include <cstdio>
+#include <cstring>
 #include <cstdlib>
+#include <cassert>
 
 using namespace std;
 
+string simpleMult(string, string);
 string removeZeros(string);
 string shift(string, size_t);
 string add(string, string);
 string sub(string, string);
-string simpleMult(string, string);
 string karatsuba(string, string);
 
 
 int main() {
     char buffer[1000001];
+    clock_t start, end;
+    double t_simple, t_karatsuba;
 
     scanf("%s", buffer);
     string X = string(buffer);
     scanf("%s", buffer);
     string Y = string(buffer);
 
-    printf("%s\n", karatsuba(X, Y).c_str());
+    start = clock();
+    string res_simple = simpleMult(X,Y);
+    end = clock();
+    t_simple = (double)(end - start) / CLOCKS_PER_SEC;
+
+    start = clock();
+    string res_karatsuba = karatsuba(X,Y).c_str();
+    end = clock();
+    t_karatsuba = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("%s", res_karatsuba.c_str());
+
+    assert(res_simple == res_karatsuba);
+
+    fprintf(stderr, "%d %.2f %.2f\n", (unsigned)strlen(buffer), t_simple, t_karatsuba);
 
     return 0;
+}
+
+string simpleMult(string X, string Y) {
+    size_t n = X.size();
+    size_t m = Y.size();
+    if (!n || !m) {
+        printf("One of strings is NULL");
+        exit(0);
+    }
+    if (X == "0" || Y == "0") {
+        return "0";
+    }
+
+    string res(n+m, '0');
+    for (int i = m-1; i >= 0; i--) {
+        int carry = 0;
+        for (int val, j = n-1; j >= 0; j--) {
+            val = (carry + (res[i+j+1] - '0') + (Y[i] - '0')*(X[j] - '0'));
+            res[i+j+1] = '0' + (val % 10);
+            carry = val / 10;
+        }
+        res[i] += carry;
+    }
+    return removeZeros(res);
 }
 
 string removeZeros(string s) {
@@ -92,30 +133,6 @@ string sub(string a, string b) {
     }
     // take care of minus ( should not happen here )
 
-    return removeZeros(res);
-}
-
-string simpleMult(string X, string Y) {
-    size_t n = X.size();
-    size_t m = Y.size();
-    if (!n || !m) {
-        printf("One of strings is NULL");
-        exit(0);
-    }
-    if (X == "0" || Y == "0") {
-        return "0";
-    }
-
-    string res(n+m, '0');
-    for (int i = m-1; i >= 0; i--) {
-        int carry = 0;
-        for (int val, j = n-1; j >= 0; j--) {
-            val = (carry + (res[i+j+1] - '0') + (Y[i] - '0')*(X[j] - '0'));
-            res[i+j+1] = '0' + (val % 10);
-            carry = val / 10;
-        }
-        res[i] += carry;
-    }
     return removeZeros(res);
 }
 
