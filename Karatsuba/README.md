@@ -31,4 +31,5 @@ Usage
 
 TODO
 ----
-* Use vectors
+* <s>Use vectors</s>
+* <s>Check sign</s>
