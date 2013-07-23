@@ -10,4 +10,3 @@ do
     diff res_karatsuba res_bc
 done
 rm -rf res_* 
-
