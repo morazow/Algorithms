@@ -26,6 +26,11 @@ PPdist closest_pair(int, int, const vector<Point> &);
 int main(int argc, char *argv[]) {
     int N = atoi(argv[1]);
 
+    if (N <= 1) {
+        printf("The number of points should be bigger than 1.\n");
+        return 1;
+    }
+
     srand(time(NULL));
     vector<Point> points(N);
     for (int i = 0; i < N; i++)
