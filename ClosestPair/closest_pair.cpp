@@ -24,10 +24,14 @@ PPdist brute_force(int, int, const vector<Point> &);
 PPdist closest_pair(int, int, const vector<Point> &);
 
 int main(int argc, char *argv[]) {
-    int N = atoi(argv[1]);
+    if (argc <= 1) {
+        fprintf(stderr, "Usage %s <number of points>\n", argv[0]);
+        return 1;
+    }
+    size_t N = atoi(argv[1]);
 
     if (N <= 1) {
-        printf("The number of points should be bigger than 1.\n");
+        fprintf(stderr, "The number of points should be bigger than 1.\n");
         return 1;
     }
 
