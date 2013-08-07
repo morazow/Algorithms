@@ -23,10 +23,10 @@ class Graph {
     public:
         Graph(bool _directed = false);
         Graph(const Graph &);
-        Graph(int, int, bool _directed = false);
+        Graph(uint32_t, uint32_t, bool _directed = false);
         ~Graph();
 
-        void addEdge(int, int);
+        void addEdge(uint32_t, uint32_t);
         void SCC();
 };
 

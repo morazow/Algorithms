@@ -1,17 +1,12 @@
 #include "graph.h"
 
-#include <algorithm>
-
 Graph::Graph(bool _directed) {
     m_nodes = m_edges = 0;
     m_directed = _directed;
     m_adj = m_rev = NULL;
 }
 
-Graph::Graph(const Graph &G) {
-}
-
-Graph::Graph(int _nodes = 0, int _edges = 0, bool _directed)
+Graph::Graph(uint32_t _nodes = 0, uint32_t _edges = 0, bool _directed)
     :m_nodes(_nodes),
      m_edges(_edges),
      m_directed(_directed) {
@@ -26,7 +21,7 @@ Graph::~Graph() {
     delete []m_rev;
 }
 
-void Graph::addEdge(int u, int v) {
+void Graph::addEdge(uint32_t u, uint32_t v) {
     assert(u >= 0 && u < m_nodes);
     assert(v >= 0 && v < m_nodes);
 
@@ -36,7 +31,6 @@ void Graph::addEdge(int u, int v) {
         m_adj[v].push_back(u),
         m_rev[u].push_back(v);
 }
-
 
 void Graph::RevDfs(uint32_t u, std::vector<bool> &vis, std::vector<uint32_t> &seq) {
     vis[u] = true;
@@ -62,7 +56,7 @@ void Graph::SCC() {
     // find connected components
     // using reverse visited order in previous DFS
 
-    // DFS Loop
+    // First DFS Loop
     std::vector<bool> visited(m_nodes, false);
     std::vector<uint32_t> order;
     order.reserve(m_nodes);
@@ -70,19 +64,15 @@ void Graph::SCC() {
         if (!visited[i]) RevDfs(i, visited, order);
     }
 
+    // Second DFS Loop
     // Re use the visited array as it is.
-    std::vector<uint32_t> sizes;
+    uint32_t max_size = 0, size;
     std::vector<uint32_t>::reverse_iterator it = order.rbegin();
     for (; it != order.rend(); it++) {
         if (!visited[*it]) continue;
-        uint32_t size = 0;
+        size = 0;
         Dfs(*it, visited, size);
-        sizes.push_back(size);
+        if (max_size < size)
+            max_size = size;
     }
-    std::sort(sizes.begin(), sizes.end());
-    size_t Sz = sizes.size();
-    if (Sz > 5) Sz = 5;
-    for (int i = 0; i < Sz; i++)
-        printf("%d ", sizes[sizes.size() - i - 1]);
-    printf("\n");
 }
