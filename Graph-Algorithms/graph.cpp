@@ -34,7 +34,7 @@ void Graph::addEdge(uint32_t u, uint32_t v) {
 
 void Graph::RevDfs(uint32_t u, std::vector<bool> &vis, std::vector<uint32_t> &seq) {
     vis[u] = true;
-    std::vector<uint32_t>::iterator it = m_rev[u].begin();
+    std::vector<uint32_t>::const_iterator it = m_rev[u].begin();
     for (; it != m_rev[u].end(); it++) {
         if (!vis[*it]) RevDfs(*it, vis, seq);
     }
@@ -44,7 +44,7 @@ void Graph::RevDfs(uint32_t u, std::vector<bool> &vis, std::vector<uint32_t> &se
 void Graph::Dfs(uint32_t u, std::vector<bool> &vis, uint32_t &size) {
     vis[u] = false;
     size++;
-    std::vector<uint32_t>::iterator it = m_adj[u].begin();
+    std::vector<uint32_t>::const_iterator it = m_adj[u].begin();
     for (; it != m_adj[u].end(); it++) {
         if (vis[*it]) Dfs(*it, vis, size);
     }
@@ -58,17 +58,17 @@ void Graph::SCC() {
 
     // First DFS Loop
     std::vector<bool> visited(m_nodes, false);
-    std::vector<uint32_t> order;
-    order.reserve(m_nodes);
+    std::vector<uint32_t> visited_order;
+    visited_order.reserve(m_nodes);
     for (uint32_t i = 0; i < m_nodes; i++) {
-        if (!visited[i]) RevDfs(i, visited, order);
+        if (!visited[i]) RevDfs(i, visited, visited_order);
     }
 
     // Second DFS Loop
     // Re use the visited array as it is.
     uint32_t max_size = 0, size;
-    std::vector<uint32_t>::reverse_iterator it = order.rbegin();
-    for (; it != order.rend(); it++) {
+    std::vector<uint32_t>::const_reverse_iterator it = visited_order.rbegin();
+    for (; it != visited_order.rend(); it++) {
         if (!visited[*it]) continue;
         size = 0;
         Dfs(*it, visited, size);
