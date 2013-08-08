@@ -3,7 +3,8 @@
 Graph::Graph(bool _directed) {
     m_nodes = m_edges = 0;
     m_directed = _directed;
-    m_adj = m_rev = NULL;
+    m_adj = NULL;
+    m_rev = NULL;
 }
 
 Graph::Graph(uint32_t _nodes = 0, uint32_t _edges = 0, bool _directed)
@@ -11,7 +12,7 @@ Graph::Graph(uint32_t _nodes = 0, uint32_t _edges = 0, bool _directed)
      m_edges(_edges),
      m_directed(_directed) {
     assert(m_nodes >= 0 && m_edges >= 0);
-    m_adj = new std::vector<uint32_t>[m_nodes];
+    m_adj = new std::vector<w_edge>[m_nodes];
     m_rev = new std::vector<uint32_t>[m_nodes];
     assert(m_adj != NULL && m_rev != NULL);
 }
@@ -25,11 +26,20 @@ void Graph::addEdge(uint32_t u, uint32_t v) {
     assert(u >= 0 && u < m_nodes);
     assert(v >= 0 && v < m_nodes);
 
-    m_adj[u].push_back(v);
+    m_adj[u].push_back( std::make_pair(0, v) );
     m_rev[v].push_back(u);
     if (!m_directed)
-        m_adj[v].push_back(u),
+        m_adj[v].push_back( std::make_pair(0, u) ),
         m_rev[u].push_back(v);
+}
+
+void Graph::addEdge(uint32_t u, uint32_t v, int32_t d) {
+    assert(u >= 0 && u < m_nodes);
+    assert(v >= 0 && v < m_nodes);
+
+    m_adj[u].push_back( std::make_pair(d, v) );
+    if (!m_directed)
+        m_adj[v].push_back( std::make_pair(d, u) );
 }
 
 void Graph::RevDfs(uint32_t u, std::vector<bool> &vis, std::vector<uint32_t> &seq) {
@@ -44,9 +54,9 @@ void Graph::RevDfs(uint32_t u, std::vector<bool> &vis, std::vector<uint32_t> &se
 void Graph::Dfs(uint32_t u, std::vector<bool> &vis, uint32_t &size) {
     vis[u] = false;
     size++;
-    std::vector<uint32_t>::const_iterator it = m_adj[u].begin();
+    std::vector<w_edge>::const_iterator it = m_adj[u].begin();
     for (; it != m_adj[u].end(); it++) {
-        if (vis[*it]) Dfs(*it, vis, size);
+        if (vis[it->second]) Dfs(it->second, vis, size);
     }
 }
 
@@ -74,5 +84,29 @@ void Graph::SCC() {
         Dfs(*it, visited, size);
         if (max_size < size)
             max_size = size;
+    }
+}
+
+void Graph::Dijkstra(uint32_t start) {
+    std::priority_queue<w_edge, std::vector<w_edge>, std::greater<w_edge> > PQ;
+    std::vector<int32_t> dist(m_nodes, 1000001);
+
+    dist[start] = 0;
+    PQ.push( std::make_pair(0, start) );
+    while ( !PQ.empty() ) {
+        w_edge top = PQ.top();
+        PQ.pop();
+
+        uint32_t u = top.second;
+        int32_t  d = top.first;
+
+        if (dist[u] <= d) {
+            std::vector<w_edge>::iterator it = m_adj[u].begin();
+            for (; it != m_adj[u].end(); it++)
+                if ( dist[it->second] > d + it->first ) {
+                    dist[it->second] = d + it->first;
+                    PQ.push( std::make_pair(dist[it->second], it->second) );
+                }
+        }
     }
 }

@@ -3,6 +3,7 @@
 
 // STL
 #include <vector>
+#include <queue>
 
 // C
 #include <stdio.h>
@@ -14,7 +15,10 @@ class Graph {
     uint32_t m_edges;
     bool m_directed;
 
-    std::vector<uint32_t> *m_adj;
+    // weighted edge, (d:weight, v:neighbour)
+    typedef std::pair<int32_t, uint32_t> w_edge;
+
+    std::vector<w_edge> *m_adj;
     std::vector<uint32_t> *m_rev;
 
     void RevDfs(uint32_t, std::vector<bool> &, std::vector<uint32_t> &);
@@ -27,7 +31,9 @@ class Graph {
         ~Graph();
 
         void addEdge(uint32_t, uint32_t);
+        void addEdge(uint32_t, uint32_t, int32_t);
         void SCC();
+        void Dijkstra(uint32_t);
 };
 
 #endif

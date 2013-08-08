@@ -19,10 +19,8 @@ int main(int argc, char* argv[]) {
     while (fgets(buffer, 1024, stdin)) {
         std::istringstream in(buffer);
         in >> u;
-        assert(u > 0 && u <= 200);
         u--;
         while (in >> v >> comma >> d) {
-            assert(v > 0 && v <= 200);
             v--;
             G->addEdge(u, v, d);
         }
