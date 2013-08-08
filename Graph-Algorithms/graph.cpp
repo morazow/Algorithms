@@ -75,7 +75,7 @@ void Graph::SCC() {
     }
 
     // Second DFS Loop
-    // Re use the visited array as it is.
+    // Re use the visited array as it is, no need to initialize again.
     uint32_t max_size = 0, size;
     std::vector<uint32_t>::const_reverse_iterator it = visited_order.rbegin();
     for (; it != visited_order.rend(); it++) {
@@ -89,7 +89,8 @@ void Graph::SCC() {
 
 void Graph::Dijkstra(uint32_t start) {
     std::priority_queue<w_edge, std::vector<w_edge>, std::greater<w_edge> > PQ;
-    std::vector<int32_t> dist(m_nodes, 1000001);
+#define MAX_WEIGHT 1000001
+    std::vector<int32_t> dist(m_nodes, MAX_WEIGHT);
 
     dist[start] = 0;
     PQ.push( std::make_pair(0, start) );
@@ -109,4 +110,9 @@ void Graph::Dijkstra(uint32_t start) {
                 }
         }
     }
+
+    int32_t max_d = 0;
+    std::vector<int32_t>::iterator it = dist.begin();
+    for (; it != dist.end(); it++)
+         max_d = *it > max_d ? *it : max_d;
 }

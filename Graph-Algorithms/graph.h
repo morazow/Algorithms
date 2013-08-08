@@ -18,7 +18,7 @@ class Graph {
     // weighted edge, (d:weight, v:neighbour)
     typedef std::pair<int32_t, uint32_t> w_edge;
 
-    std::vector<w_edge> *m_adj;
+    std::vector<w_edge>   *m_adj;
     std::vector<uint32_t> *m_rev;
 
     void RevDfs(uint32_t, std::vector<bool> &, std::vector<uint32_t> &);
