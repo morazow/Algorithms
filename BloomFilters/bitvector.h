@@ -42,6 +42,10 @@ class BitVector {
             m_count++;
         }
 
+        bool lookup(int x) {
+            return test(x);
+        }
+
     private:
         enum { MASK          = 0x1F,
                SHIFT         = 5,
