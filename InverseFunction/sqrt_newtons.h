@@ -1,8 +1,7 @@
 #ifndef _NEWTONS_H_
 #define _NEWTONS_H_
 
-// C
-#include <stdio.h>
+// fabs
 #include <math.h>
 
 const double EPS = 1e-15;
