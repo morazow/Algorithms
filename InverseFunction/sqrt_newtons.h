@@ -1,4 +1,4 @@
-#ifndef _NEWTONS_H_
+#/ifndef _NEWTONS_H_
 #define _NEWTONS_H_
 
 // fabs
